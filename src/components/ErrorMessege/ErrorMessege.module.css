@@ -1,0 +1,11 @@
+.errorContainer {
+  margin: 30px auto;
+  padding: 20px;
+  width: 400px;
+  border: 1px solid red;
+  border-radius: 20px;
+}
+
+.errorText {
+  text-align: center;
+}

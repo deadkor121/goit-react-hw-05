@@ -1,0 +1,56 @@
+.details {
+  margin: 40px 0;
+  padding: 0 20px;
+  position: relative;
+}
+
+.detailsButton {
+  padding: 16px;
+  position: absolute;
+  right: 20px;
+  color: rgb(255, 255, 255);
+  border: 1px solid #000000;
+  border-radius: 16px;
+  text-decoration: none;
+}
+
+.detailsBox {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  gap: 25px;
+}
+
+.pageImg {
+  display: block;
+  width: 100%;
+}
+
+.genresList {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.boxAdditional {
+  margin-top: 40px;
+  padding: 30px 0;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.additionalList {
+  margin-top: 15px;
+  padding-left: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.additionalItem {
+  list-style: "🌟✨" inside;
+  text-decoration: none;
+}
+
+.additionalItem a {
+  text-decoration: none;
+}

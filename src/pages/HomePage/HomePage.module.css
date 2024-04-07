@@ -1,0 +1,19 @@
+.homeContainer {
+  margin: 30px 0;
+  padding: 0 20px;
+}
+
+.homeList {
+  margin: 20px 0;
+  padding: 0 15px;
+  width: 500px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.homeItem {
+  list-style: "🎞" inside;
+}
