@@ -6,13 +6,13 @@ import { getMovieCast } from "../../sevices/API";
 import style from "./MovieCast.module.css";
 
 const MovieCast = () => {
-  const { moviesId } = useParams();
+  const { movieId } = useParams();
   const [movieCast, setMovieCast] = useState([]);
 
   useEffect(() => {
     async function getInfoMoviesCast() {
       try {
-        const data = await getMovieCast(moviesId);
+        const data = await getMovieCast(movieId);
         setMovieCast(data.cast);
       } catch (error) {
         console.log("error: ", error);
@@ -22,7 +22,7 @@ const MovieCast = () => {
     }
 
     getInfoMoviesCast();
-  }, [moviesId]);
+  }, [movieId]);
 
   return (
     <ul className={clsx(style.castList)}>

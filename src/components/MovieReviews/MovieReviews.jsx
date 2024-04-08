@@ -6,13 +6,13 @@ import { getMovieReviews } from "../../sevices/API";
 import style from "./MovieReviews.module.css";
 
 const MovieReviews = () => {
-  const { moviesId } = useParams();
+  const { movieId } = useParams();
   const [movieReviews, setMovieReviews] = useState([]);
 
   useEffect(() => {
     async function getInfoMovieReviews() {
       try {
-        const data = await getMovieReviews(moviesId);
+        const data = await getMovieReviews(movieId);
         setMovieReviews(data.results);
       } catch (error) {
         console.log("error: ", error);
@@ -22,7 +22,7 @@ const MovieReviews = () => {
     }
 
     getInfoMovieReviews();
-  }, [moviesId]);
+  }, [movieId]);
 
   return (
     <div>

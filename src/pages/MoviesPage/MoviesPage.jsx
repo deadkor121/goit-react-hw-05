@@ -1,19 +1,26 @@
 import toast, { Toaster } from "react-hot-toast";
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect, lazy } from "react";
 import clsx from "clsx";
 
 import { getSearchMovies } from "../../sevices/API";
 
-import style from "./MoviesPage.module.css";
+const ErrorMessege = lazy(() =>
+  import("../../components/ErrorMessege/ErrorMessege")
+);
+const MovieList = lazy(() => import("../../components/MovieList/MovieList"));
 import Loader from "../../components/Loader/Loader";
-import ErrorMessege from "../../components/ErrorMessege/ErrorMessege";
+
+import style from "./MoviesPage.module.css";
+// import { useSearchParams } from "react-router-dom";
 
 const MoviesPage = () => {
   const [showList, setShowList] = useState("");
   const [arrMovies, setArrMovies] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
   const [showError, setShowError] = useState(false);
+  //   const [searchParams, setSearchParams] = useSearchParams();
+
+  //   console.log(searchParams.get("name"));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -68,16 +75,7 @@ const MoviesPage = () => {
         <ErrorMessege />
       ) : (
         <div className={clsx(style.searchContainer)}>
-          <ul className={clsx(style.searchList)}>
-            {Array.isArray(arrMovies) &&
-              arrMovies.map((item) => {
-                return (
-                  <li className={clsx(style.searchItem)} key={item.id}>
-                    <NavLink to={`${item.id}`}>{item.title}</NavLink>
-                  </li>
-                );
-              })}
-          </ul>
+          <MovieList moviesList={arrMovies} />
         </div>
       )}
     </>

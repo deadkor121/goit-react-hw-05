@@ -1,5 +1,3 @@
-// Ключ API - 9cc377b2ec4408f2c566215c7f463d66
-// Ключ доступа к API - eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5Y2MzNzdiMmVjNDQwOGYyYzU2NjIxNWM3ZjQ2M2Q2NiIsInN1YiI6IjY2MGY4YzRhZDQ4Y2VlMDE5ZmJkODVkNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MFJhlmFYG2w0SoscCPSIM0TOJWVvZ_VrYf-QC-eylIc
 
 import axios from "axios";
 

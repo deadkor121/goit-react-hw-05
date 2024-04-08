@@ -1,26 +1,20 @@
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useParams, useLocation, Outlet } from "react-router-dom";
 import clsx from "clsx";
-
-const MovieCast = lazy(() => import("../../components/MovieCast/MovieCast"));
-const MovieReviews = lazy(() =>
-  import("../../components/MovieReviews/MovieReviews")
-);
 
 import { getDetailsMovies } from "../../sevices/API";
 import style from "./MovieDetailsPage.module.css";
 
 const MovieDetailsPage = () => {
   const [itemCardMovie, setItemCardMovie] = useState([]);
-  const { moviesId } = useParams();
+  const { movieId } = useParams();
   const location = useLocation();
   const backLinkRef = useRef(location.state ?? "/");
 
   useEffect(() => {
     async function getItemMovies() {
       try {
-        const data = await getDetailsMovies(moviesId);
+        const data = await getDetailsMovies(movieId);
         setItemCardMovie(data);
       } catch (error) {
         console.log("error: ", error);
@@ -30,7 +24,7 @@ const MovieDetailsPage = () => {
     }
 
     getItemMovies();
-  }, [moviesId]);
+  }, [movieId]);
 
   return (
     <div className={clsx(style.details)}>
@@ -72,12 +66,7 @@ const MovieDetailsPage = () => {
           </li>
         </ul>
       </div>
-      <Suspense>
-        <Routes>
-          <Route path="cast" element={<MovieCast />} />
-          <Route path="reviews" element={<MovieReviews />} />
-        </Routes>
-      </Suspense>
+      <Outlet />
     </div>
   );
 };
