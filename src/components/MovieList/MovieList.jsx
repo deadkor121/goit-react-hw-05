@@ -1,7 +1,11 @@
+
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import clsx from "clsx";
 
+import React from "react";
+import { NavLink } from "react-router-dom";
+
+import clsx from "clsx";
 import style from "./MovieList.module.css";
 
 const MovieList = ({ moviesList }) => {
@@ -19,10 +23,16 @@ const MovieList = ({ moviesList }) => {
               >
                 {item.title}
               </Link>
+
+              <NavLink to={`/movies/${item.id}`} state={{ location }}>
+                {item.title}
+              </NavLink>
+
             </li>
           );
         })}
     </ul>
   );
 };
+
 export default MovieList;
