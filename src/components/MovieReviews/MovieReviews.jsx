@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory, useSearchParams } from "react-router-dom"; // Додатково імпортуємо хук useSearchParams
 import clsx from "clsx";
 
 import { getMovieReviews } from "../../sevices/API";
@@ -7,7 +7,9 @@ import style from "./MovieReviews.module.css";
 
 const MovieReviews = () => {
   const { movieId } = useParams();
+  const history = useHistory();
   const [movieReviews, setMovieReviews] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     async function getInfoMovieReviews() {
@@ -16,18 +18,20 @@ const MovieReviews = () => {
         setMovieReviews(data.results);
       } catch (error) {
         console.log("error: ", error);
-      } finally {
-        console.log();
       }
     }
 
     getInfoMovieReviews();
   }, [movieId]);
 
+  useEffect(() => {
+    setSearchParams(searchParams);
+  }, [searchParams]); // Передаємо параметри у URL
+
   return (
     <div>
       {movieReviews.length === 0 ? (
-        <p>We don`t have any reviews for this movie</p>
+        <p>We don't have any reviews for this movie</p>
       ) : (
         <ul className={clsx(style.reviewsList)}>
           {Array.isArray(movieReviews) &&
@@ -44,4 +48,5 @@ const MovieReviews = () => {
     </div>
   );
 };
+
 export default MovieReviews;
