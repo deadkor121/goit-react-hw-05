@@ -39,7 +39,6 @@ const MovieDetailsPage = () => {
         <div>
           <h2>{itemCardMovie.original_title}</h2>
           <p>
-            User Score:{" "}
             {itemCardMovie.length !== 0 &&
               itemCardMovie.vote_average.toFixed(2)}
             %

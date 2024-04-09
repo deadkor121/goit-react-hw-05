@@ -1,6 +1,6 @@
-import { useListMovies } from "../../hooks/useListMovies";
 import clsx from "clsx";
 
+import { useListMovies } from "../../hooks/useListMovies";
 import MovieList from "../../components/MovieList/MovieList";
 
 import style from "./HomePage.module.css";

@@ -11,16 +11,13 @@ const MovieList = lazy(() => import("../../components/MovieList/MovieList"));
 import Loader from "../../components/Loader/Loader";
 
 import style from "./MoviesPage.module.css";
-// import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const MoviesPage = () => {
-  const [showList, setShowList] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [arrMovies, setArrMovies] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
   const [showError, setShowError] = useState(false);
-  //   const [searchParams, setSearchParams] = useSearchParams();
-
-  //   console.log(searchParams.get("name"));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,17 +28,18 @@ const MoviesPage = () => {
         icon: "😰",
       });
     } else {
-      setShowList(search.value);
+      setSearchParams({ name: search.value });
     }
   };
 
   useEffect(() => {
+    const name = searchParams.get("name");
     async function getListMovies() {
-      if (showList.length === 0) return;
+      if (!name) return;
       try {
         setShowError(false);
         setShowLoader(true);
-        const data = await getSearchMovies(showList);
+        const data = await getSearchMovies(name);
         setArrMovies(data);
       } catch (error) {
         setShowError(true);
@@ -50,7 +48,7 @@ const MoviesPage = () => {
       }
     }
     getListMovies();
-  }, [showList]);
+  }, [searchParams]);
 
   return (
     <>
