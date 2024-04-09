@@ -1,11 +1,9 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import clsx from "clsx";
 import style from "./MovieList.module.css";
 
 const MovieList = ({ moviesList }) => {
-  const location = useLocation();
-
   return (
     <ul className={clsx(style.list)}>
       {Array.isArray(moviesList) &&
