@@ -1,50 +1,46 @@
-import { useEffect, useState } from "react";
-import { useParams, useHistory, useSearchParams } from "react-router-dom"; // Додатково імпортуємо хук useSearchParams
-import clsx from "clsx";
-
-import { getMovieReviews } from "../../sevices/API";
-import style from "./MovieReviews.module.css";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getReviewsById } from '../../filmsApi';
+import Loader from '../Loader/Loader';
+import css from './MovieReviews.module.css';
 
 const MovieReviews = () => {
   const { movieId } = useParams();
-  const history = useHistory();
-  const [movieReviews, setMovieReviews] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    async function getInfoMovieReviews() {
+    async function getReviews() {
       try {
-        const data = await getMovieReviews(movieId);
-        setMovieReviews(data.results);
+        setIsLoading(true);
+        const data = await getReviewsById(movieId);
+        setReviews(data);
       } catch (error) {
-        console.log("error: ", error);
+        setError(true);
+      } finally {
+        setIsLoading(false);
       }
     }
 
-    getInfoMovieReviews();
+    getReviews();
   }, [movieId]);
-
-  useEffect(() => {
-    setSearchParams(searchParams);
-  }, [searchParams]); // Передаємо параметри у URL
-
   return (
     <div>
-      {movieReviews.length === 0 ? (
-        <p>We don't have any reviews for this movie</p>
-      ) : (
-        <ul className={clsx(style.reviewsList)}>
-          {Array.isArray(movieReviews) &&
-            movieReviews.map((item) => {
-              return (
-                <li className={clsx(style.reviewsItem)} key={item.id}>
-                  <h3>{item.author}</h3>
-                  <p className={clsx(style.itemName)}>{item.content}</p>
-                </li>
-              );
-            })}
-        </ul>
-      )}
+      {isLoading && <Loader />}
+      {error && <b>HTTP error!</b>}
+      <ul className={css.reviewList}>
+        {reviews.length ? (
+          reviews.map(review => (
+            <li key={review.id} className={css.reviewListItem}>
+              <p className={css.reviewAuthor}>{review.author}</p>
+              <p>{review.content}</p>
+            </li>
+          ))
+        ) : (
+          <div>We do not have any reviews on this film</div>
+        )}
+      </ul>
     </div>
   );
 };

@@ -1,0 +1,30 @@
+.searchForm {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+.formInput {
+  display: block;
+  width: 640px;
+  padding: 12px;
+  border-radius: 8px;
+  outline: none;
+  border-color: #202020;
+  font-size: 18px;
+  color: #1a1a1a;
+}
+.formBtn {
+  padding: 0 18px;
+  border-radius: 8px;
+  outline: none;
+  border-color: #080808;
+  font-size: 16px;
+  color: #242424;
+  cursor: pointer;
+  transition: all 0.8s ease-in-out;
+}
+.formBtn:hover {
+  color: #1c1c1c;
+  background-color: #616161;
+}

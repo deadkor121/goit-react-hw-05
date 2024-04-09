@@ -1,19 +1,30 @@
-.container {
-  margin: 30px 0;
-  padding: 0 20px;
+.listItem {
+  width: 300px;
 }
-
-.list {
-  margin: 20px 0;
-  padding: 0 15px;
-  width: 500px;
-  height: 350px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  gap: 10px;
+.imgWrapper {
+  height: 364px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
 }
+.listItemImg {
+  height: 100%;
+  display: block;
+  object-fit: cover;
 
-.item {
-  list-style: "🎞" inside;
+  transition: all 0.8s ease-in-out;
+}
+.itemLink {
+  text-decoration: none;
+  color: #020202;
+  transition: all 0.8s ease-in-out;
+}
+.itemLink:hover {
+  color: #545453;
+}
+.itemLink:hover .listItemImg {
+  transform: scale(1.1);
+}
+.itemTitle {
+  text-align: center;
 }

@@ -1,56 +1,49 @@
-.details {
-  margin: 40px 0;
-  padding: 0 20px;
-  position: relative;
+.container {
+  padding-top: 16px;
 }
-
-.detailsButton {
-  padding: 16px;
-  position: absolute;
-  right: 20px;
-  color: rgb(255, 255, 255);
-  border: 1px solid #fff;
-  border-radius: 16px;
-  text-decoration: none;
-}
-
-.detailsBox {
+.contentWrapper {
   display: flex;
-  flex-direction: row;
-  align-items: start;
-  gap: 25px;
+  gap: 40px;
+  margin-bottom: 20px;
+  box-shadow: 0px 7px 7px -3px rgba(2, 2, 2, 0.6);
 }
-
-.pageImg {
-  display: block;
-  width: 100%;
+.contentImg {
+  width: 320px;
+  height: 480px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 30px;
 }
-
+.description {
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 .genresList {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
+  gap: 8px;
 }
-
-.boxAdditional {
-  margin-top: 40px;
-  padding: 30px 0;
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
+.extraContent {
+  font-size: 24px;
 }
-
 .additionalList {
-  margin-top: 15px;
-  padding-left: 20px;
   display: flex;
   gap: 20px;
 }
-
-.additionalItem {
-  list-style: "🌟" inside;
+.linkItem {
   text-decoration: none;
+  color: #010101;
+  font-weight: bold;
+  transition: box-shadow 0.8s ease-in-out;
 }
 
-.additionalItem a {
-  text-decoration: none;
+.linkItem:hover {
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.6);
+}
+.linkActive {
+  color: rgb(0, 0, 0);
+}
+.extraContentWrapper {
+  margin-bottom: 8px;
 }

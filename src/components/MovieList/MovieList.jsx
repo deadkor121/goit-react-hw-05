@@ -1,38 +1,32 @@
+import { Link, useLocation } from 'react-router-dom';
+import css from './MovieList.module.css';
 
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-
-import React from "react";
-import { NavLink } from "react-router-dom";
-
-import clsx from "clsx";
-import style from "./MovieList.module.css";
-
-const MovieList = ({ moviesList }) => {
+const MovieList = ({ movies }) => {
+  const imagePath = 'https://image.tmdb.org/t/p/w500/';
   const location = useLocation();
 
   return (
-    <ul className={clsx(style.list)}>
-      {Array.isArray(moviesList) &&
-        moviesList.map((item) => {
-          return (
-            <li className={clsx(style.item)} key={item.id}>
-              <Link
-                to={`/movies/${item.id}`}
-                state={`${location.pathname}${location.search}`}
-              >
-                {item.title}
-              </Link>
+    <>
+      {movies.map(movie => (
+        <li key={movie.id} className={css.listItem}>
+          <Link
+            to={`/movies/${movie.id}`}
+            state={location}
+            className={css.itemLink}
+          >
+            <div className={css.imgWrapper}>
+              <img
+                src={`${imagePath}${movie.backdrop_path}`}
+                alt={movie.title}
+                className={css.listItemImg}
+              />
+            </div>
 
-              <NavLink to={`/movies/${item.id}`} state={{ location }}>
-                {item.title}
-              </NavLink>
-
-            </li>
-          );
-        })}
-    </ul>
+            <h3 className={css.itemTitle}>{movie.title}</h3>
+          </Link>
+        </li>
+      ))}
+    </>
   );
 };
-
 export default MovieList;

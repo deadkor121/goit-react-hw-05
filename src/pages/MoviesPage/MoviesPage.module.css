@@ -1,44 +1,10 @@
-.searchBox {
-  margin: 50px auto 30px auto;
+.searchPage {
+  padding: 32px;
+}
+.movieList {
+  padding: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.moviesForm {
-  display: flex;
-  gap: 20px;
-}
-
-.moviesInput {
-  width: 200px;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-}
-
-.formButton {
-  border: 1px solid #fff;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.searchContainer {
-  margin: 30px 0;
-  padding: 0 20px;
-}
-
-.searchList {
-  margin: 20px 0;
-  padding: 0 15px;
-  width: 500px;
-  height: 350px;
-  display: flex;
-  flex-direction: column;
   flex-wrap: wrap;
-  gap: 10px;
-}
-
-.searchItem {
-  list-style: "🎞" inside;
+  gap: 26px;
+  justify-content: space-around;
 }

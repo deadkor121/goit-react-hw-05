@@ -1,45 +1,47 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import clsx from "clsx";
-
-import { getMovieCast } from "../../sevices/API";
-import style from "./MovieCast.module.css";
+import { getCreditsById } from '../../filmsApi';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Loader from '../Loader/Loader';
+import css from './MovieCast.module.css';
 
 const MovieCast = () => {
   const { movieId } = useParams();
-  const [movieCast, setMovieCast] = useState([]);
+  const imagePath = 'https://image.tmdb.org/t/p/w500/';
+  const [credits, setCredits] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    async function getInfoMoviesCast() {
+    async function getCredits() {
       try {
-        const data = await getMovieCast(movieId);
-        setMovieCast(data.cast);
+        setIsLoading(true);
+        const data = await getCreditsById(movieId);
+        setCredits(data);
       } catch (error) {
-        console.log("error: ", error);
+        setError(true);
       } finally {
-        console.log();
+        setIsLoading(false);
       }
     }
 
-    getInfoMoviesCast();
+    getCredits();
   }, [movieId]);
-
   return (
-    <ul className={clsx(style.castList)}>
-      {Array.isArray(movieCast) &&
-        movieCast.map((item) => {
-          return (
-            <li className={clsx(style.castItem)} key={item.id}>
-              <img
-                className={clsx(style.itemImg)}
-                src={`https://image.tmdb.org/t/p/w500/${item.profile_path}`}
-                alt=""
-              />
-              <p className={clsx(style.itemName)}>{item.name}</p>
+    <div>
+      {isLoading && <Loader />}
+      {error && <b>HTTP error!</b>}
+      <ul className={css.castList}>
+        {credits &&
+          credits.cast &&
+          credits.cast.map(actor => (
+            <li key={actor.id} className={css.castListItem}>
+              <img src={`${imagePath}${actor.profile_path}`} alt={actor.name} />
+              <p>{actor.name}</p>
             </li>
-          );
-        })}
-    </ul>
+          ))}
+      </ul>
+    </div>
   );
 };
+
 export default MovieCast;

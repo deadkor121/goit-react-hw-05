@@ -1,12 +1,12 @@
-.reviewsList {
-  margin: 40px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.reviewList {
+  max-width: 880px;
 }
-
-.reviewsItem {
-  padding: 20px;
-  border: 1px solid #fff;
-  border-radius: 16px;
+.reviewListItem {
+  margin-bottom: 20px;
+  box-shadow: 0px 7px 7px -3px rgba(0, 0, 0, 0.6);
+}
+.reviewAuthor {
+  font-size: 18px;
+  color: rgb(0, 0, 0);
+  margin-bottom: 8px;
 }

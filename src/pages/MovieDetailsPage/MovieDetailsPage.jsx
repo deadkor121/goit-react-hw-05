@@ -1,71 +1,89 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useParams, useLocation, Outlet } from "react-router-dom";
-import clsx from "clsx";
-
-import { getDetailsMovies } from "../../sevices/API";
-import style from "./MovieDetailsPage.module.css";
+import { Suspense, useEffect, useState } from 'react';
+import { Outlet, useParams, NavLink } from 'react-router-dom';
+import { getMovieById } from '../../filmsApi';
+import Loader from '../../components/Loader/Loader';
+import ButtonBack from '../../components/ButtonBack/ButtonBack';
+import css from './MovieDetailsPage.module.css';
+import clsx from 'clsx';
 
 const MovieDetailsPage = () => {
-  const [itemCardMovie, setItemCardMovie] = useState([]);
+  const imagePath = 'https://image.tmdb.org/t/p/w500/';
   const { movieId } = useParams();
-  const location = useLocation();
-  const backLinkRef = useRef(location.state ?? "/");
+  const [movie, setMovie] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    async function getItemMovies() {
+    async function getMovie() {
       try {
-        const data = await getDetailsMovies(movieId);
-        setItemCardMovie(data);
+        setIsLoading(true);
+        const data = await getMovieById(movieId);
+
+        setMovie(data);
       } catch (error) {
-        console.log("error: ", error);
+        setError(true);
       } finally {
-        console.log();
+        setIsLoading(false);
       }
     }
 
-    getItemMovies();
+    getMovie();
   }, [movieId]);
 
+  const setLinkClass = ({ isActive }) => {
+    return clsx(css.linkItem, isActive && css.linkActive);
+  };
+
   return (
-    <div className={clsx(style.details)}>
-      <Link className={clsx(style.detailsButton)} to={backLinkRef.current}>
-        ⬅ Go Back
-      </Link>
-      <div className={clsx(style.detailsBox)}>
-        <img
-          src={`https://image.tmdb.org/t/p/w500/${itemCardMovie.backdrop_path}`}
-          alt=""
-        />
-        <div>
-          <h2>{itemCardMovie.original_title}</h2>
-          <p>
-            {itemCardMovie.length !== 0 &&
-              itemCardMovie.vote_average.toFixed(2)}
-            %
-          </p>
-          <h3>Overview</h3>
-          <p>{itemCardMovie.overview}</p>
-          <p>Genres</p>
-          <ul className={clsx(style.genresList)}>
-            {Array.isArray(itemCardMovie.genres) &&
-              itemCardMovie.genres.map((item) => {
-                return <li key={item.id}>{item.name}</li>;
-              })}
-          </ul>
+    <div className={css.container}>
+      <ButtonBack />
+      {isLoading && <Loader />}
+      {error && <b>HTTP error!</b>}
+      {movie && (
+        <div className={css.contentWrapper}>
+          <div className={css.imgWrapper}>
+            <img
+              src={`${imagePath}${movie.backdrop_path}`}
+              alt={movie.title}
+              className={css.contentImg}
+            />
+          </div>
+          <div className={css.description}>
+            <h2>
+              {movie.title} ({movie.release_date.split('-')[0]})
+            </h2>
+            <p>User Score : {Math.round(movie.vote_average * 10)}%</p>
+            <h3>Overview</h3>
+            <p>{movie.overview}</p>
+            <div>
+              <h4>Genres</h4>
+              <ul className={css.genresList}>
+                {movie.genres.map(genre => {
+                  return <li key={genre.id}>{genre.name}</li>;
+                })}
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className={clsx(style.boxAdditional)}>
-        <h3>Additional information:</h3>
-        <ul className={clsx(style.additionalList)}>
-          <li className={clsx(style.additionalItem)}>
-            <Link to="cast">Cast</Link>
+      )}
+      <div className={css.extraContentWrapper}>
+        <p className={css.extraContent}>Additional information</p>
+        <ul className={css.additionalList}>
+          <li>
+            <NavLink to="cast" className={setLinkClass}>
+              Cast
+            </NavLink>
           </li>
-          <li className={clsx(style.additionalItem)}>
-            <Link to="reviews">Reviews</Link>
+          <li>
+            <NavLink to="reviews" className={setLinkClass}>
+              Reviews
+            </NavLink>
           </li>
         </ul>
       </div>
-      <Outlet />
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 };

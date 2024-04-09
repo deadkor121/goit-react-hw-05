@@ -1,24 +1,22 @@
-.header {
-  padding: 20px 20px;
-  background-color: rgb(80, 83, 83);
-}
-
-.headerNav {
+.nav {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  padding: 0 32px;
+  gap: 12px;
+  height: 64px;
+  align-items: center;
+  box-shadow: 0px 7px 7px -3px rgba(0, 0, 0, 0.6);
+  background-color: #353535;
 }
-
-.headerList {
-  font-size: 24px;
-  line-height: 1.5;
-  font-weight: 700;
-  cursor: pointer;
+.linkItem {
   text-decoration: none;
-  color: #fff;
-  cursor: pointer;
+  color: #fdfdfb;
+  font-weight: bold;
+  transition: box-shadow 0.8s ease-in-out;
 }
 
-.active {
-  color: rgba(36, 141, 228, 0.753);
+.linkItem:hover {
+  box-shadow: 0px 3px 3px rgba(91, 91, 91, 0.6);
+}
+.linkActive {
+  color: rgb(0, 0, 0);
 }

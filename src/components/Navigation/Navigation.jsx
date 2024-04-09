@@ -1,26 +1,22 @@
-import { NavLink } from "react-router-dom";
-import clsx from "clsx";
+import { NavLink } from 'react-router-dom';
+import css from './Navigation.module.css';
+import clsx from 'clsx';
 
-import style from "./Navigation.module.css";
+const setLinkClass = ({ isActive }) => {
+  return clsx(css.linkItem, isActive && css.linkActive);
+};
 
-const HeaderBox = () => {
-  const getNavLinkClassName = ({ isActive }) =>
-    clsx(style.headerList, {
-      [style.active]: isActive,
-    });
-
+const Navigation = () => {
   return (
-    <header className={clsx(style.header)}>
-      <nav className={clsx(style.headerNav)}>
-        <NavLink className={getNavLinkClassName} to="/">
-          Home
-        </NavLink>
-        <NavLink className={getNavLinkClassName} to="/movies">
-          Movies
-        </NavLink>
-      </nav>
-    </header>
+    <nav className={css.nav}>
+      <NavLink to="/" className={setLinkClass}>
+        Home
+      </NavLink>
+      <NavLink to="/movies" className={setLinkClass}>
+        Movies
+      </NavLink>
+    </nav>
   );
 };
 
-export default HeaderBox;
+export default Navigation;
