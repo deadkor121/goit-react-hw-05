@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchSearchMovies } from '../../filmsApi';
 import Loader from '../../components/Loader/Loader';
 import MovieList from '../../components/MovieList/MovieList';
@@ -10,7 +10,7 @@ const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const [lastSearchQuery, setLastSearchQuery] = useState('');
 
   useEffect(() => {
@@ -21,29 +21,36 @@ const MoviesPage = () => {
           setError(false);
           const dataResp = await fetchSearchMovies(query);
           if (dataResp.length === 0) {
-            setError('No movies found for your request');
+            setError('No movies found per your request');
           }
           setMovies(dataResp);
           setLastSearchQuery(query);
         } catch (error) {
-          setError('Oops, HTTP issue!');
+          setError('Oops, http issue!');
         } finally {
           setIsLoading(false);
         }
       }
     }
 
-    fetchData(params.get('query') || '');
+    const searchQuery = params.get('query') || '';
+
+    setLastSearchQuery(prevSearchQuery => {
+      if (searchQuery !== prevSearchQuery) {
+        fetchData(searchQuery);
+      }
+      return searchQuery;
+    });
   }, [params]);
 
   const handleSearch = async newQuery => {
     if (newQuery.trim() === '') {
-      setError('The query is empty, please input a search request');
+      setError('The query is empty, please input search request');
       return;
     }
 
     setMovies([]);
-    params.set('query', newQuery);
+    setParams({ query: newQuery });
   };
 
   return (
