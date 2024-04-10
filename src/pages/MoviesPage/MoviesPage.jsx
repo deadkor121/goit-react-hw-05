@@ -21,96 +21,72 @@ import SearchForm from '../../components/SearchForm/SearchForm';
 import css from './MoviesPage.module.css';
 
 const MoviesPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [arrMovies, setArrMovies] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
   const [showError, setShowError] = useState(false);
+
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const fetchData = async (query) => {
+    if (query !== '') {
+      try {
+        setIsLoading(true);
+        setError(false);
+        const dataResp = await fetchSearchMovies(query);
+        if (dataResp.length === 0) {
+          setError('No movies found per your request');
+        }
+        setMovies(dataResp);
+      } catch (error) {
+        setError('Oops, http issue!');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }
+
+  useEffect(() => {
+    const searchQuery = searchParams.get('query') || '';
+    fetchData(searchQuery);
+  }, [searchParams]);
+
+  const handleSearch = async (newQuery) => {
+    if (newQuery.trim() === '') {
+      setError('The query is empty, please input a search request');
+      return;
+    }
+
+    setMovies([]); // Clear previous search results
+    setSearchParams({ query: newQuery });
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
     const { search } = form.elements;
     if (search.value.length === 0) {
-      toast.error("The input field is empty! Please write a word to search.", {
-        icon: "😰",
-      });
+      toast.error("The input field is empty! Please write a word to search.", { icon: "😰" });
     } else {
-      setSearchParams({ name: search.value });
+      handleSearch(search.value);
     }
-  };
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [params, setParams] = useSearchParams();
-  const [lastSearchQuery, setLastSearchQuery] = useState('');
-
-  useEffect(() => {
-    const name = searchParams.get("name");
-    async function getListMovies() {
-      if (!name) return;
-      try {
-        setShowError(false);
-        setShowLoader(true);
-        const data = await getSearchMovies(name);
-        setArrMovies(data);
-      } catch (error) {
-        setShowError(true);
-      } finally {
-        setShowLoader(false);
-    async function fetchData(query) {
-      if (query !== '') {
-        try {
-          setIsLoading(true);
-          setError(false);
-          const dataResp = await fetchSearchMovies(query);
-          if (dataResp.length === 0) {
-            setError('No movies found per your request');
-          }
-          setMovies(dataResp);
-          setLastSearchQuery(query);
-        } catch (error) {
-          setError('Oops, http issue!');
-        } finally {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    const searchQuery = params.get('query') || '';
-
-    setLastSearchQuery(prevSearchQuery => {
-      if (searchQuery !== prevSearchQuery) {
-        fetchData(searchQuery);
-      }
-      return searchQuery;
-    });
-  }, [params]);
-
-  const handleSearch = async newQuery => {
-    if (newQuery.trim() === '') {
-      setError('The query is empty, please input search request');
-      return;
-    }
-    getListMovies();
-  }, [searchParams]);
-
-    setMovies([]);
-    setParams({ query: newQuery });
   };
 
   return (
     <>
-      <div className={clsx(style.searchBox)}>
-        <form className={clsx(style.moviesForm)} onSubmit={handleSubmit}>
+      <div className={style.searchBox}>
+        <form className={style.moviesForm} onSubmit={handleSubmit}>
           <input
-            className={clsx(style.moviesInput)}
+            className={style.moviesInput}
             type="text"
             name="search"
             autoComplete="off"
             autoFocus
             placeholder="Search films and movies"
           />
-          <button className={clsx(style.formButton)} type="submit">
+          <button className={style.formButton} type="submit">
             Search
           </button>
         </form>
@@ -118,27 +94,17 @@ const MoviesPage = () => {
       </div>
       {showLoader && <Loader />}
       {showError ? (
-        <ErrorMessege />
-    <div className={css.searchPage}>
-      <SearchForm
-        lastSearchQuery={lastSearchQuery}
-        handleSearch={handleSearch}
-      />
-      {error ? (
-        <div>{error}</div>
+        <ErrorMessagе />
       ) : (
-        <div className={clsx(style.searchContainer)}>
+        <div className={style.searchContainer}>
           <MovieList moviesList={arrMovies} />
         </div>
-        <>
-          <ul className={css.movieList}>
-            {!isLoading && movies.length > 0 && <MovieList movies={movies} />}
-            {isLoading && <Loader />}
-          </ul>
-        </>
       )}
+      <>
+        {!isLoading && movies.length > 0 && <MovieList movies={movies} />}
+        {isLoading && <Loader />}
+      </>
     </>
-    </div>
   );
 };
 
