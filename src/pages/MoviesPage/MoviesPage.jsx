@@ -66,7 +66,7 @@ import { useState, useEffect } from 'react';
      setSearchQuery(newQuery);
      setParams(params => ({
        ...params,
-        we use the name to tell Formik which key of `values` to update
+       // we use the name to tell Formik which key of `values` to update
        query: newQuery,
     }));
      setSearchQuery('');
