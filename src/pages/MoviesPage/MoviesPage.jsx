@@ -1,7 +1,7 @@
 import toast, { Toaster } from "react-hot-toast";
 import { useState, useEffect, lazy } from "react";
 import clsx from "clsx";
-import { fetchSearchMovies } from "../../filmsApi";
+import { fetchSearchMovies } from '../../filmsApi';
 const ErrorMessagе = lazy(() => import("../../components/ErrorMessage/ErrorMessage"));
 const MovieList = lazy(() => import("../../components/MovieList/MovieList"));
 import Loader from "../../components/Loader/Loader";
@@ -16,8 +16,8 @@ const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [searchParams, setSearchParams] = useSearchParams();
-
+  const searchParams = useSearchParams();
+  
   const fetchData = async (query) => {
     if (query !== '') {
       try {
