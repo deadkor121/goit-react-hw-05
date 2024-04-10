@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchSearchMovies } from '../../filmsApi';
 import Loader from '../../components/Loader/Loader';
 import MovieList from '../../components/MovieList/MovieList';
@@ -6,11 +6,10 @@ import { useSearchParams } from 'react-router-dom';
 import SearchForm from '../../components/SearchForm/SearchForm';
 import css from './MoviesPage.module.css';
 
- const MoviesPage = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null); // Змінив початкове значення помилки на null
   const [params, setParams] = useSearchParams();
   const [lastSearchQuery, setLastSearchQuery] = useState('');
 
@@ -19,27 +18,34 @@ import css from './MoviesPage.module.css';
       if (query !== '') {
         try {
           setIsLoading(true);
-          setError(false);
+          setError(null); // Скидаю помилку перед загрузкою нових даних
           const dataResp = await fetchSearchMovies(query);
           if (dataResp.length === 0) {
-            setError('No movies found per your request');
+            setError('No movies found for your request');
           }
           setMovies(dataResp);
           setLastSearchQuery(query);
         } catch (error) {
-          setError('Oops, http issue!');
+          setError('Oops, HTTP issue!');
         } finally {
-           setIsLoading(false);
+          setIsLoading(false);
         }
       }
     }
 
-     getMovies();
-   }, [filmQuery]);
+    const searchQuery = params.get('query') || '';
+
+    setLastSearchQuery(prevSearchQuery => {
+      if (searchQuery !== prevSearchQuery) {
+        fetchData(searchQuery);
+      }
+      return searchQuery;
+    });
+  }, [params]);
 
   const handleSearch = async newQuery => {
     if (newQuery.trim() === '') {
-      setError('The query is empty, please input search request');
+      setError('The query is empty, please input a search request');
       return;
     }
 
@@ -47,36 +53,28 @@ import css from './MoviesPage.module.css';
     setParams({ query: newQuery });
   };
 
-   return (
-     <div>
-       <Formik
-         initialValues={{ query: searchQuery }}
-         onSubmit={(values, actions) => {
-           handleSearch(values.query);
-           actions.resetForm();
-        }}
-        
-        <Form>
-           <Field name="query" placeholder="Search movies" />
-           <button type="submit">Search</button>
-         </Form>
-       </Formik>
-
-       {error ? (
-         <div>{error}</div>
-       ) : (
-         <>
-           {!isLoading && !error && movies.length > 0 && (
-            <MovieList movies={movies} />
-           )}
-           {isLoading && <Loader />}
-         </>
+  return (
+    <div className={css.searchPage}>
+      <SearchForm
+        lastSearchQuery={lastSearchQuery}
+        handleSearch={handleSearch}
+      />
+      {error ? (
+        <div>{error}</div>
+      ) : (
+        <>
+          <ul className={css.movieList}>
+            {!isLoading && movies.length > 0 && <MovieList movies={movies} />}
+            {isLoading && <Loader />}
+          </ul>
+        </>
       )}
-     </div>
-   );
- };
+    </div>
+  );
+};
 
 export default MoviesPage;
+
 
 // import { useState, useEffect } from 'react';
 // import { Field, Form, Formik } from 'formik';
